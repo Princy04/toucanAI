@@ -209,7 +209,7 @@ const steps = [
     user: true,
     trigger: "31",
   },
-  { id: "31", message: "Thank you for your time tes test ⌚", trigger: "32" },
+  { id: "31", message: "Thank you for your time ⌚", trigger: "32" },
   {
     id: "32",
     message: "Hope you have a nice and pleasant stay at our hotel. 🙏",

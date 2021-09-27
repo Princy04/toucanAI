@@ -1,7 +1,7 @@
 const steps = [
   {
     id: "1",
-    message: "Welcome to Transway hotels Group 😊",
+    message: "Welcome to Hyatt hotels Group 😊",
     trigger: "2",
   },
   {

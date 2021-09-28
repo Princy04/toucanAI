@@ -25,7 +25,7 @@ const steps = [
       },
       {
         value: 2,
-        label: "What all properties does your group have?",
+        label: "What properties do you have available ?",
         trigger: "6",
       },
     ],

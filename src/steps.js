@@ -32,7 +32,7 @@ const steps = [
   },
   {
     id: "5",
-    message: "Thank you for choosing Transway Hotel Group. 🏢",
+    message: "Thank you for choosing Hyatt Hotel Group. 🏢",
     trigger: "6",
   },
   {

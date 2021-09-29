@@ -196,7 +196,7 @@ const ChatBotComponent = () => {
           <img
             style={{ width: "200px", height: "200px" }}
             src={
-              "https://assets.hyatt.com/content/dam/hyatt/hyattdam/images/2018/07/02/1033/Grand-Hyatt-Kochi-Bolgatty-P058-Hotel-Facade.jpg/Grand-Hyatt-Kochi-Bolgatty-P058-Hotel-Facade.16x9.jpg"
+              "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/04/96/9e/d1/park-hyatt-chennai.jpg?w=900&h=-1&s=1"
             }
           />
         </div>

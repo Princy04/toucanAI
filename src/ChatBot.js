@@ -6,20 +6,10 @@ import steps from "./steps";
 const ChatBotComponent = () => {
   const [open, setOpen] = useState(false);
 
-  const toggleFloating = () => {
-    setOpen(true);
-  };
-
   return (
     <>
       <div>Toucan AI ChatBot</div>
-      <ChatBot
-        botDelay={1500}
-        steps={steps}
-        floating={true}
-        opened={open}
-        toggleFloating={toggleFloating}
-      />
+      <ChatBot botDelay={1500} steps={steps} floating={true} opened={open} />
     </>
   );
 };

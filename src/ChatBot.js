@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import ChatBot from "react-simple-chatbot";
-import styled from "styled-components";
-import steps from "./steps";
-import { Button } from "@material-ui/core";
+// import styled from "styled-components";
+import Calendar from "react-calendar";
+import "react-calendar/dist/Calendar.css";
+import moment from "moment";
 
 const ChatBotComponent = () => {
   const backURL =
     "https://thermelgy-service-4oevwyecva-uc.a.run.app/api/genericApi";
-  const [open, setOpen] = useState(false);
+  const [date, setDate] = useState();
+  const [open] = useState(false);
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [rooms, setRooms] = useState();
@@ -16,102 +18,50 @@ const ChatBotComponent = () => {
   const [hotel, setHotel] = useState("");
 
   useEffect(() => {
-    if (email) {
-      requestServer();
-    }
+    if (email) requestServer();
   }, [email]);
 
-  const CustomOptions = ({ triggerNextStep }) => {
+  const CustomCalendar = () => {
     return (
-      <>
-        <Button
-          style={{
-            backgroundColor: "#6E48AA",
-            color: "#fff",
-            height: "18%",
-            fontSize: "10px",
-            width: "auto",
-            marginTop: "15px",
-            borderRadius: "20px",
-          }}
-          variant="contained"
-          onClick={() => triggerNextStep({ trigger: "11" })}
-          //setHotel("Hyatt Regency")
-        >
-          Hyatt Regency
-        </Button>
-        <Button
-          style={{
-            backgroundColor: "#6E48AA",
-            color: "#fff",
-            height: "18%",
-            width: "auto",
-            marginTop: "15px",
-            borderRadius: "20px",
-            marginLeft: "2%",
-            fontSize: "10px",
-          }}
-          variant="contained"
-          onClick={() => triggerNextStep({ trigger: "11" })}
-          // setHotel("Park Hyatt"))}
-        >
-          Park Hyatt
-        </Button>
-      </>
+      <div>
+        <Calendar
+          onChange={setDate}
+          className={{ width: "280px" }}
+          value={date}
+        />
+      </div>
+    );
+  };
+  const CustomUserName = (props) => {
+    const [name, setName] = useState("");
+
+    useEffect(() => {
+      const { steps } = props;
+      const { name } = steps;
+      setName(name);
+    }, [props]);
+    return (
+      <span style={{ fontSize: "14px", color: "white" }}>
+        Thank you for your time {name.value} ⌚{" "}
+      </span>
     );
   };
 
-  const CustomDates = ({ triggerNextStep }) => {
+  const CustomHotelName = (props) => {
+    const [hotelName, setHotelName] = useState("");
+
+    useEffect(() => {
+      const { steps } = props;
+      const { hotelName } = steps;
+      setHotelName(hotelName);
+      setHotel(hotelName.value);
+    }, [props]);
     return (
       <>
-        <Button
-          style={{
-            backgroundColor: "#6E48AA",
-            color: "#fff",
-            height: "18%",
-            fontSize: "10px",
-            width: "auto",
-            marginTop: "15px",
-            borderRadius: "20px",
-          }}
-          variant="contained"
-          onClick={() => triggerNextStep({ trigger: "15" })}
-        >
-          Sep 30
-        </Button>
-        <Button
-          style={{
-            backgroundColor: "#6E48AA",
-            color: "#fff",
-            height: "18%",
-            width: "auto",
-            marginTop: "15px",
-            borderRadius: "20px",
-            marginLeft: "2%",
-            fontSize: "10px",
-          }}
-          variant="contained"
-          onClick={() => triggerNextStep({ trigger: "15" })}
-        >
-          Oct 1
-        </Button>
-
-        <Button
-          style={{
-            backgroundColor: "#6E48AA",
-            color: "#fff",
-            height: "18%",
-            width: "auto",
-            marginTop: "15px",
-            borderRadius: "20px",
-            marginLeft: "2%",
-            fontSize: "10px",
-          }}
-          variant="contained"
-          onClick={() => triggerNextStep({ trigger: "15" })}
-        >
-          Oct 2
-        </Button>
+        <span style={{ fontSize: "14px", color: "white" }}>
+          {" "}
+          Thank you for choosing {hotelName.value} 😊
+        </span>
       </>
     );
   };
@@ -121,8 +71,8 @@ const ChatBotComponent = () => {
     let payload = {
       api_name: "chatbotsendEmail",
       data: {
-        hotel_name: "Hyatt Hotels",
-        date: "26-08-21",
+        hotel_name: hotel,
+        date: moment(date).format("DD-MM-YY"),
         stay: days,
         rooms: rooms,
         name: name,
@@ -194,6 +144,7 @@ const ChatBotComponent = () => {
         <div>
           {" "}
           <img
+            alt=""
             style={{ width: "200px", height: "200px" }}
             src={
               "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/04/96/9e/d1/park-hyatt-chennai.jpg?w=900&h=-1&s=1"
@@ -201,27 +152,27 @@ const ChatBotComponent = () => {
           />
         </div>
       ),
-      trigger: "hotel_options",
+      trigger: "hotelName",
     },
     {
-      id: "hotel_options",
-      // options: [
-      //   {
-      //     value: "Hyatt Regency",
-      //     label: "Hyatt Regency",
-      //     trigger: "11",
-      //   },
-      //   {
-      //     value: "Park Hyatt",
-      //     label: "Park Hyatt",
-      //     trigger: "11",
-      //   },
-      // ],
-      component: <CustomOptions />,
+      id: "hotelName",
+      options: [
+        {
+          value: "Hyatt Regency",
+          label: "Hyatt Regency",
+          trigger: "11",
+        },
+        {
+          value: "Park Hyatt",
+          label: "Park Hyatt",
+          trigger: "11",
+        },
+      ],
     },
     {
       id: "11",
-      message: "Thank you for choosing {previousValue} 😊.",
+      component: <CustomHotelName />,
+      asMessage: true,
       trigger: "13",
     },
     {
@@ -229,7 +180,7 @@ const ChatBotComponent = () => {
       message: "To check availability please enter your arrival date. 📆",
       trigger: "14",
     },
-    { id: "14", component: <CustomDates /> },
+    { id: "14", component: <CustomCalendar />, trigger: "15" },
     {
       id: "15",
       message: "And how many nights you'll be staying? 🌜",
@@ -249,7 +200,7 @@ const ChatBotComponent = () => {
     },
     {
       id: "17",
-      message: "That's nice. 😊",
+      message: "That's nice.😊",
       trigger: "18",
     },
     {
@@ -277,13 +228,13 @@ const ChatBotComponent = () => {
     {
       id: "21",
       message: "May I know on which name would you like to have this booking?",
-      trigger: "22",
+      trigger: "name",
     },
     {
-      id: "22",
+      id: "name",
       user: true,
       validator: (value) => {
-        let re = /^[a-zA-Z]+$/;
+        let re = /^[a-zA-Z ]+$/;
         let result = re.test(value);
         if (result) {
           setName(value);
@@ -296,7 +247,6 @@ const ChatBotComponent = () => {
     {
       id: "23",
       message: "Thank you for your prompt response {previousValue}. ",
-
       trigger: "24",
     },
     {
@@ -340,10 +290,12 @@ const ChatBotComponent = () => {
       id: "28",
       user: true,
       validator: (value) => {
-        if (isNaN(value)) {
-          return "Please enter valid phone number";
+        let phonereg = /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/im;
+        let result = phonereg.test(value);
+        if (result) {
+          return true;
         }
-        return true;
+        return "Please enter valid phone number";
       },
       trigger: "29",
     },
@@ -369,7 +321,8 @@ const ChatBotComponent = () => {
     },
     {
       id: "31",
-      message: "Thank you for your time " + `${name}` + "⌚",
+      component: <CustomUserName name={name} />,
+      asMessage: true,
       trigger: "32",
     },
     {

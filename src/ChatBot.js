@@ -3,7 +3,7 @@ import axios from "axios";
 import ChatBot from "react-simple-chatbot";
 // import styled from "styled-components";
 import Calendar from "react-calendar";
-import "react-calendar/dist/Calendar.css";
+// import "react-calendar/dist/Calendar.css";
 import moment from "moment";
 
 const ChatBotComponent = () => {
